@@ -42,13 +42,10 @@
 # Other Server Settings:
 | Server Start Param| Description |
 | --- | --- | 
-| `-savedir [PATH]` | Overrides the default save path where Worlds
- and ermission files are stored. |
+| `-savedir [PATH]` | Overrides the default save path where Worlds and Permission files are stored. |
 | `-logFile “d:\log.txt”` |  Sets the location to save the log file. | 
-| `-saveinterval 1800` |  Change how often the world will save in seconds.
- Default is 30 minutes (1800seconds). |
-| `-backups 4` |  Sets how many automatic backups will be kept.
- The first is the ‘short’ backup length, and the rest are the ‘long’ backup length.|
+| `-saveinterval 1800` |  Change how often the world will save in seconds. Default is 30 minutes (1800seconds). |
+| `-backups 4` |  Sets how many automatic backups will be kept. The first is the ‘short’ backup length, and the rest are the ‘long’ backup length.|
 | `-NoticeSelfEnable=` | Enable/Disable Welcome Text | -NoticeSelfEnable=true |
 | `-NoticeSelfEnterServer=` | Welcome text when joining the Server | NoticeSelfEnterServer="Welcome to my Server!" |
 
