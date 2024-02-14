@@ -21,7 +21,7 @@ namespace WindowsGSM.Plugins
             description = "WindowsGSM plugin for supporting Valheim Dedicated Server",
             version = "1.1",
             url = "https://github.com/Sarpendon/WindowsGSM.Valheim", // Github repository link (Best practice)
-            color = "#AD2D89" // Color Hex
+            color = "#c40000" // Color Hex
         };
 
         // - Settings properties for SteamCMD installer
