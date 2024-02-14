@@ -44,10 +44,10 @@
 | --- | --- | 
 | `-savedir [PATH]` | Overrides the default save path where Worlds and Permission files are stored. |
 | `-logFile “d:\log.txt”` |  Sets the location to save the log file. | 
-| `-saveinterval 1800` |  Change how often the world will save in seconds. Default is 30 minutes (1800seconds). |
-| `-backups 4` |  Sets how many automatic backups will be kept. The first is the ‘short’ backup length, and the rest are the ‘long’ backup length.|
-| `-NoticeSelfEnable=` | Enable/Disable Welcome Text | -NoticeSelfEnable=true |
-| `-NoticeSelfEnterServer=` | Welcome text when joining the Server | NoticeSelfEnterServer="Welcome to my Server!" |
+| `-saveinterval 1800` |  Change how often the world will save in seconds. Default is 30 minutes (1800 seconds). |
+| `-backups 4` |  Sets how many automatic backups will be kept. The first is the ‘short’ backup length, and the rest are the ‘long’ backup length. By default that means one backup that is 2 hours old, and 3 backups that are 12 hours apart.|
+| `-backupshort 7200` | Sets the interval between the first automatic backups. Default is 2 hours (7200 seconds). |
+| `-backuplong 43200` | Sets the interval between the subsequent automatic backups. Default is 12 hours (43200 seconds). |
 
 
 > [!NOTE]
