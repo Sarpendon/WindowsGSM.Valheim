@@ -30,7 +30,6 @@
 >- **Server Query Port:** *it's normally your Server Port +1*
 >- **Server Maxplayer:** *Maximum Number of Players on your Server*
 >- **Server Start Map:** *Enter the Seed of the Map you want to generate here!*
->- **Server GSLT:** *Without Mods Vaheim requires you to set a Password for your Server you can do it here!*
 >- **Server Start Param:** *Some Parameter are already filled in by default you can add or remove them as you wish! 
 
 > [!TIP]
