@@ -47,8 +47,7 @@ namespace WindowsGSM.Plugins
         public string QueryPort = "2457"; // Default query port
         public string Defaultmap = "MapSeed"; // Used for Server ID
         public string Maxplayers = "4"; // Default maxplayers
-		public string ServerGSLT = "123456"; // Server Password
-        public string Additional = "-crossplay -saveinterval 1800 -backups 4 -backupshort 7200 -backuplong 43200"; // Additional server start parameter
+        public string Additional = "-password "123456" -crossplay -saveinterval 1800 -backups 4 -backupshort 7200 -backuplong 43200"; // Additional server start parameter
 
 
         // - Create a default cfg for the game server after installation
@@ -67,7 +66,6 @@ namespace WindowsGSM.Plugins
             // Prepare start parameter
 			string param = $"-nographics -batchmode -public 1"; // Set basic parameters
 			param += string.IsNullOrWhiteSpace(_serverData.ServerName) ? string.Empty : $" -name \"{_serverData.ServerName}\"";
-			param += string.IsNullOrWhiteSpace(_serverData.ServerGSLT) ? string.Empty : $" -password \"{_serverData.ServerGSLT}\"";
 			param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $" -port {_serverData.ServerPort}"; 
 			param += string.IsNullOrWhiteSpace(_serverData.ServerMap) ? string.Empty : $" -world \"{_serverData.ServerMap}\"";
 			param += string.IsNullOrWhiteSpace(_serverData.ServerParam) ? string.Empty : $" {_serverData.ServerParam}";
