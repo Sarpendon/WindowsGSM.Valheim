@@ -53,6 +53,6 @@
 >For more Settings use the Valheim Dedicated Server Manual, you can find it as PDF in the Server directory!
 
 # Other WinGSM Plugins:
-| Icon | Game Name | Link |
-| --- | --- | --- |
-| <img src="https://i.imgur.com/LI1uPIJ.png" width="100" height="100"> | Myth of Empires Dedicated Server | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.MythofEmpires)
+| Icon | Game Name | Link | Version |
+| --- | --- | --- | --- |
+| <img src="https://i.imgur.com/LI1uPIJ.png" width="100" height="100"> | Myth of Empires Dedicated Server | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.MythofEmpires) | 1.9 |
