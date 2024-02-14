@@ -55,4 +55,4 @@
 # Other WinGSM Plugins:
 | Icon | Game Name | Link |
 | --- | --- | --- |
-| <img src="https://i.imgur.com/LI1uPIJ.png" width="100" height="100"> | Myth of Empires | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.MythofEmpires)
+| <img src="https://i.imgur.com/LI1uPIJ.png" width="100" height="100"> | Myth of Empires Dedicated Server | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.MythofEmpires)
