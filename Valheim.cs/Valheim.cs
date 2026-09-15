@@ -37,7 +37,7 @@ namespace WindowsGSM.Plugins
         public override string StartPath => @"valheim_server.exe";
         public string FullName = "Valheim Dedicated Server";
         public bool AllowsEmbedConsole = true;
-        public int PortIncrements = 2;
+        public int PortIncrements = 3;
         public object QueryMethod = new A2S();
 
         // - Game server default values
