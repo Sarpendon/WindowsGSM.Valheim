@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace WindowsGSM.Plugins
 {
@@ -72,8 +73,10 @@ namespace WindowsGSM.Plugins
                 EnableRaisingEvents = true
             };
 
-            // Set up Redirect Input and Output to WindowsGSM Console if EmbedConsole is on
-            if (AllowsEmbedConsole)
+            // Set up Redirect Input and Output to WindowsGSM Console if EmbedConsole is on.
+            // This has to test the server's own setting - testing AllowsEmbedConsole, which is
+            // hardcoded true, made the UI toggle a no-op and left the windowed path unreachable.
+            if (AllowsEmbedConsole && _serverData.EmbedConsole)
             {
                 gameServerProcess.StartInfo.CreateNoWindow = true;
                 gameServerProcess.StartInfo.RedirectStandardInput = true;
@@ -132,13 +135,69 @@ namespace WindowsGSM.Plugins
             }
         }
 
+        // - Graceful shutdown support
+        // Valheim only flushes the world to disk when it receives Ctrl+C. When the server
+        // is started with CreateNoWindow there is no window to send keystrokes to, so the
+        // signal has to be raised on the process's console instead.
+        private delegate bool ConsoleCtrlDelegate(uint ctrlType);
+        private const uint CTRL_C_EVENT = 0;
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool AttachConsole(uint dwProcessId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool FreeConsole();
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate handler, bool add);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool GenerateConsoleCtrlEvent(uint dwCtrlEvent, uint dwProcessGroupId);
+
         public async Task Stop(Process gameServerProcess)
         {
+            if (gameServerProcess == null || gameServerProcess.HasExited) { return; }
+
             await Task.Run(() =>
             {
-                Functions.ServerConsole.SetMainWindow(gameServerProcess.MainWindowHandle);
-                Functions.ServerConsole.SendWaitToMainWindow("^c"); // Send Ctrl+C command
-                gameServerProcess.WaitForExit(5000);
+                bool signalled = false;
+
+                try
+                {
+                    // AttachConsole fails if this process already owns a console.
+                    FreeConsole();
+
+                    if (AttachConsole((uint)gameServerProcess.Id))
+                    {
+                        // The event goes to every process sharing that console, which now
+                        // includes WindowsGSM. Ignore it here before raising it, or the
+                        // manager takes itself down along with the server.
+                        SetConsoleCtrlHandler(null, true);
+                        signalled = GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
+                    }
+
+                    if (!signalled)
+                    {
+                        // Fall back to the original behaviour for a server started with a window.
+                        Functions.ServerConsole.SetMainWindow(gameServerProcess.MainWindowHandle);
+                        Functions.ServerConsole.SendWaitToMainWindow("^c");
+                    }
+
+                    // Saving a large world takes far longer than the old 5 second cap allowed,
+                    // and WindowsGSM awaits this call without a timeout of its own. Only wait
+                    // out a long shutdown if a signal actually reached the server - otherwise
+                    // there is nothing to wait for and the kill should not be held up.
+                    gameServerProcess.WaitForExit(signalled ? 120000 : 5000);
+                }
+                catch (Exception e)
+                {
+                    Error = e.Message;
+                }
+                finally
+                {
+                    try { FreeConsole(); } catch { }
+                    try { SetConsoleCtrlHandler(null, false); } catch { }
+                }
             });
         }
 
