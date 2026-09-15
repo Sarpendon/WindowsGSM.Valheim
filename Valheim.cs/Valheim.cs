@@ -142,6 +142,10 @@ namespace WindowsGSM.Plugins
         private delegate bool ConsoleCtrlDelegate(uint ctrlType);
         private const uint CTRL_C_EVENT = 0;
 
+        // How long to hold the console pane open after the server exits, so the shutdown
+        // output stays readable. Set to 0 to hand back to WindowsGSM immediately.
+        private const int CONSOLE_LINGER_MS = 3000;
+
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool AttachConsole(uint dwProcessId);
 
@@ -188,6 +192,15 @@ namespace WindowsGSM.Plugins
                     // out a long shutdown if a signal actually reached the server - otherwise
                     // there is nothing to wait for and the kill should not be held up.
                     gameServerProcess.WaitForExit(signalled ? 120000 : 5000);
+
+                    // WindowsGSM wipes the console pane as soon as this call returns, which
+                    // takes Valheim's shutdown output - including the final world save - with
+                    // it before it can be read. Core awaits Stop() without a timeout, so
+                    // lingering here holds the pane open long enough to check the save landed.
+                    if (signalled && gameServerProcess.HasExited)
+                    {
+                        System.Threading.Thread.Sleep(CONSOLE_LINGER_MS);
+                    }
                 }
                 catch (Exception e)
                 {
